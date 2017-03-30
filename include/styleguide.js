@@ -43,8 +43,8 @@ function CreateTOC(tocElement) {
   toc.appendChild(tocHeading);
   tocHeading.className = 'ignoreLink';
   tocHeading.id = 'toc';
-  var tocText = document.createTextNode('Table of Contents');
-  tocHeading.appendChild(tocText);
+  //var tocText = document.createTextNode('Table of Contents');
+  //tocHeading.appendChild(tocText);
 
   // Add table and tbody
   var tocTable = document.createElement('table');
@@ -242,9 +242,9 @@ function hasClass(element, cls) {
  */
 
 // Add the link image to the element.
-function LinkifyHeader(header, fileName, sizePixels) {
+function LinkifyHeader(header, fileName, sizePixels, tgt) {
   var link = document.createElement('a');
-  link.href = '#' + header.id;
+  link.href = tgt + '#' + header.id;
   link.setAttribute('alt', 'link to ' + header.id);
   link.innerHTML =
       '<img src="include/' + fileName + '"' +
@@ -263,7 +263,14 @@ function LinkifyHeadersForTag(tagName) {
     header = headers[j];
     if (!hasClass(header, 'ignoreLink') && ('id' in header)) {
       if (header.id != '') {
-        LinkifyHeader(header, 'link.png', 21);
+        LinkifyHeader(header, 'link.png', 21, '');
+        header.style.left = '-67px';
+        header.style.position = 'relative';
+      }
+    }
+    if ('id' in header) {
+      if (header.id != '') {
+        LinkifyHeader(header, 'orig.png', 21, 'cppguide.html');
         header.style.left = '-46px';
         header.style.position = 'relative';
       }

@@ -12,12 +12,12 @@ body {
 h1 {
   text-align: center;
   font-size: 18pt;
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #06c;
-  margin-top: 2em;
-  margin-bottom: 1em;
   padding: 25px;
   font-weight:bold;
 }
@@ -192,6 +192,9 @@ address {
 /* Style Guide semantic CSS */
 
 .summary {
+  font-size: 110%;
+  background-color:#FAFAFA;
+  padding: 20px;
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -258,4 +261,8 @@ address {
   font-weight: bold;
   display: block;
   margin-bottom: 1em;
+}
+
+#toc:before{
+  content: "Table of Contents";
 }

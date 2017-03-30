@@ -1,0 +1,62 @@
+/* German translation of: General CSS */
+
+.definition:before {
+  content: "Definition: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.pros:before {
+  content: "Pro: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.cons:before {
+  content: "Kontra: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.decision:before {
+  content: "Entscheidung: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.exception:before {
+  content: "Ausnahme: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+.note:before {
+  content: "Notiz: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
+#toc:before{
+  content: "Inhaltsverzeichnis";
+}
+
+/* this nicely prints the URL to the original paragraph */
+/*
+h2::after{
+  content: "  => cppguide.html#" attr(id);
+}
+
+h3::after{
+  content: "  => cppguide.html#" attr(id);
+}
+*/
+
+
+[lang|=en] { color: #eee; background-color: #888; }
+
