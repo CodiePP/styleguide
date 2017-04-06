@@ -16,6 +16,12 @@
 
 <div class="main_body">
 
+  toggle languages: 
+  <a href="#" onclick="toggle_lang('en');">en</a>
+  <a href="#" onclick="toggle_lang('de');">de</a>
+  <a href="#" onclick="toggle_lang('fr');">fr</a>
+
+
 <h2 lang⁼"de" class="ignoreLink" id="Background">Hintergrund</h2>
 
 <p class="link2original"><a href="cppguide.html#Background">original</a></p>
@@ -430,10 +436,17 @@ Klasse, Funktion oder einem Template ohne dazugehörende Definition.</p>
   <code>#include</code>s force the compiler to open
   more files and process more input.</li>
 
+  <li lang="de">Vorwärtsdeklaration können Kompilierzeit einsparen,
+    weil <code>#include</code> den Compiler zwingen eine Datei
+    zu öffnen und sie zu prozessieren.</li>
+
   <li lang="en">Forward declarations can save on unnecessary
   recompilation. <code>#include</code>s can force
   your code to be recompiled more often, due to unrelated
   changes in the header.</li>
+  <li lang="de">Vorwärtsdeklaration können auch unnötige Neuübersetzungen
+    unterdrücken, verursacht durch nebensächliche Änderungen in den
+    <code>#include</code> Header.</li>
 </ul>
 </div>
 
@@ -443,6 +456,10 @@ Klasse, Funktion oder einem Template ohne dazugehörende Definition.</p>
   user code to skip necessary recompilation when headers
   change.</li>
 
+  <li lang="de">Vorwärtsdeklaration können Abhängigkeiten verstecken
+    und überspringen die Neuübersetzung von Benutzercode wenn
+    Header geändert worden sind.</li>
+
   <li lang="en">A forward declaration may be broken by subsequent
   changes to the library. Forward declarations of functions
   and templates can prevent the header owners from making
@@ -450,8 +467,17 @@ Klasse, Funktion oder einem Template ohne dazugehörende Definition.</p>
   widening a parameter type, adding a template parameter
   with a default value, or migrating to a new namespace.</li>
 
+  <li lang="de">Eine Vorwärtsdeklaration kann ungültig werden nach
+    Änderungen in einer Bibliothek. Vorwärtsdeklarationen von
+    Funktionen und Templaten können verhindern, dass Header-Eigner
+    sonst gültige Änderungen an ihrem API vornehmen können. Wie da sind:
+    Typausweitung, Hinzufügen eines Template-Parameters mit einem
+    Defaultwert oder das Migrieren in einen anderen Namensraum.</li>
+
   <li lang="en">Forward declaring symbols from namespace
   <code>std::</code> yields undefined behavior.</li>
+  <li lang="de">Die Vorwärtsdeklaration eines Symbols im Namensraum
+  <code>std::</code> zieht undefiniertes Verhalten nach sich.</li>
 
   <li lang="en">It can be difficult to determine whether a forward
   declaration or a full <code>#include</code> is needed.
@@ -472,14 +498,39 @@ Klasse, Funktion oder einem Template ohne dazugehörende Definition.</p>
   decls for <code>B</code> and <code>D</code>,
   <code>test()</code> would call <code>f(void*)</code>.
   </li>
+  <li lang="de">Es kann schwer sein abzuklären, ob eine
+  Vorwärtsdeklaration oder ein vollständiges <code>#include</code>
+  notwendig sind.
+  Das Ersetzen von <code>#include</code> mit einer Vorwärtsdeklaration
+  kann still und heimlich den Sinn von Code ändern:
+      <pre>      // b.h:
+      struct B {};
+      struct D : B {};
+
+      // good_user.cc:
+      #include "b.h"
+      void f(B*);
+      void f(void*);
+      void test(D* x) { f(x); }  // calls f(B*)
+      </pre>
+  Sofern das <code>#include</code> durch eine Vorwärtsdeklaration
+  für <code>B</code> und <code>D</code> ersetzt wurde,
+  täte <code>test()</code> die Funktion <code>f(void*)</code>
+  aufrufen.
+  </li>
 
   <li lang="en">Forward declaring multiple symbols from a header
   can be more verbose than simply
   <code>#include</code>ing the header.</li>
+  <li lang="de">Mehrere Symbole aus einer Headerdatei vowärts zu deklarieren 
+  kann aufwändiger sein als bloss ein <code>#include</code>.</li>
 
   <li lang="en">Structuring code to enable forward declarations
   (e.g. using pointer members instead of object members)
   can make the code slower and more complex.</li>
+  <li lang="de">Den Code hinsichtlich Vorwärtsdeklarationen umzubauen
+    (z.B. Zeigermethoden anstelle Objektmethoden), kann ihn
+    langsamer und komplexer machen.</li>
 
   
 </ul>
@@ -489,26 +540,35 @@ Klasse, Funktion oder einem Template ohne dazugehörende Definition.</p>
 <ul>
   <li lang="en">Try to avoid forward declarations of entities
   defined in another project.</li>
+  <li lang="de">Versuche Vorwärtsdeklarationen von Sachen, die in
+    anderen Projekten definiert sind, zu vermeiden.</li>
 
   <li lang="en">When using a function declared in a header file,
   always <code>#include</code> that header.</li>
+  <li lang="de">Sobald eine Funktion benutzt wird, die in einer Headerdatei
+    deklariert wurde, dann <code>#include</code> diese Datei.</li>
 
   <li lang="en">When using a class template, prefer to
   <code>#include</code> its header file.</li>
+  <li lang="de">Bei Benutzung eines Klassentemplat, bevorzuge ihre
+    Headerdatei zu <code>#include</code>.</li>
 </ul>
 
 <p lang="en">Please see <a href="#Names_and_Order_of_Includes">Names and Order
 of Includes</a> for rules about when to #include a header.</p>
+<p lang="de">Bite sehe auch in <a href="#Names_and_Order_of_Includes">Namen und Reihenfolge von Include</a> nach für Regeln über das Inkludieren von Headerdateien.</p>
 </div>
 
 </div> 
 
-<h3 id="Inline_Functions">Inline Functions</h3>
-<p class="link2original"><a href="cppguide.html#Goals">original</a></p>
+<h3 id="Inline_Functions">Inline Funktionen</h3>
+<p class="link2original"><a href="cppguide.html#Inline_Functions">original</a></p>
 
 <div class="summary">
 <p lang="en">Define functions inline only when they are small, say, 10
 lines or fewer.</p>
+<p lang="de">Definiere Funktionen als <code>inline</code> nur, 
+wenn sie klein sind, also etwa 10 Zeilen oder weniger zählen.</p>
 </div>
 
 <div class="stylebody">
@@ -517,6 +577,9 @@ lines or fewer.</p>
 <p lang="en">You can declare functions in a way that allows the compiler to expand
 them inline rather than calling them through the usual
 function call mechanism.</p>
+<p lang="de">Du kannst Funktionen auf eine Art deklarieren, damit der Compiler
+sie inline kopieren kann, anstelle sie über den normalen Funktionsaufrufmechanismus
+aufzurufen.</p>
 </div>
 
 <div class="pros">
@@ -524,6 +587,10 @@ function call mechanism.</p>
 code, as long as the inlined function is small. Feel free
 to inline accessors and mutators, and other short,
 performance-critical functions.</p>
+<p lang="de">Eine Funktion <code>inline</code> zu deklarieren kann 
+effizienteren Code generieren, sofern diese Funktion klein ist.
+Auslesemethoden, Mutationsmethoden, und andere Geschwindigkeitskritische, 
+kleine Funktionen, können ruhig <code>inline</code> deklariert werden.</p>
 </div>
 
 <div class="cons">
@@ -534,6 +601,15 @@ accessor function will usually decrease code size while
 inlining a very large function can dramatically increase
 code size. On modern processors smaller code usually runs
 faster due to better use of the instruction cache.</p>
+<p lang="de">Die Übernutzung von <code>inline</code> kann
+Programme sogar langsamer machen. Abhängig von der Grösse
+einer Funktion, kann dies die Programmgrösse vergrössern
+oder verkleinern. Eine sehr kleine Auslesemethode zu 
+<code>inline</code> wird normalerweise den Code verkleinern.
+Aber eine sehr grosse Funktion zu <code>inline</code> wird
+die Programmgrösse dramatisch vergrössern. Auf modernen
+Prozessoren läuft kleinerer Code häufig schneller aufgrund
+der besseren Nutzung des Befehlscache.</p>
 </div>
 
 <div class="decision">
@@ -541,13 +617,22 @@ faster due to better use of the instruction cache.</p>
 it is more than 10 lines long. Beware of destructors,
 which are often longer than they appear because of
 implicit member- and base-destructor calls!</p>
+<p lang="de">Eine gängige Daumenregel besagt, keine Funktion zu
+<code>inline</code>n wenn sie mehr als 10 Zeilen lang ist.
+Nimm dich in Acht vor den Abräumern, da diese oft länger sind
+als man denkt, aufgrund der impliziten Aufrufe von zugehörigen
+Methoden und Basisklassenabräumern!</p>
 
-<p>Another useful rule of thumb: it's typically not cost
+<p lang="en">Another useful rule of thumb: it's typically not cost
 effective to inline functions with loops or switch
 statements (unless, in the common case, the loop or
 switch statement is never executed).</p>
+<p lang="de">Eine weitere nützliche Daumenregel:
+es ist nicht kosteneffizient eine Funktion zu <code>inline</code>n, 
+wenn diese Schleifen oder Verzweigungen enthält (ausser,
+diese Befehle werden im allgemeinen Fall gar nie ausgeführt).</p>
 
-<p>It is important to know that functions are not always
+<p lang="en">It is important to know that functions are not always
 inlined even if they are declared as such; for example,
 virtual and recursive functions are not normally inlined.
 Usually recursive functions should not be inline. The
@@ -555,6 +640,17 @@ main reason for making a virtual function inline is to
 place its definition in the class, either for convenience
 or to document its behavior, e.g., for accessors and
 mutators.</p>
+<p lang="de">Es ist wichtig zu wissen, dass Funktionen
+nicht immer ge<code>inline</code> werden, auch wenn sie
+als solche deklariert wurden. Darunter fallen z.B. 
+virtuelle und rekursive Funktionen. Normalerweise sollten
+rekursive Funktionen nicht als <code>inline</code> 
+deklariert werden. Der Hauptgrund warum eine virtuelle
+Funktione <code>inline</code> deklariert wird, ist ihre
+Definition in der abgeleiteten Klasse zu platzieren, 
+einerseits wegen Bequemlichkeit, aber auch um ihre
+Verhaltensweise zu dokumentieren, z.B. Auslese-
+oder Mutationsmethoden.</p>
 </div> 
 
 </div> 
