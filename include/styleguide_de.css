@@ -58,5 +58,5 @@ h3::after{
 */
 
 
-[lang|=en] { color: #eee; background-color: #888; }
+[lang|=en] { color: #888; /*background-color: #888;*/ }
 
