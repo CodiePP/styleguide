@@ -810,9 +810,9 @@ folgendem Beispiel:</p>
 
 </div> 
 
-<h2 id="Scoping">Scoping</h2>
+<h2 id="Scoping">Gültigkeitsbereich</h2>
 
-<h3 id="Namespaces">Namespaces</h3>
+<h3 id="Namespaces">Namensbereich</h3>
 
 <div class="summary">
 <p lang="en">With few exceptions, place code in a namespace. Namespaces
@@ -821,8 +821,14 @@ its path. Do not use <i>using-directives</i> (e.g.
 <code>using namespace foo</code>). Do not use
 inline namespaces. For unnamed namespaces, see
 <a href="#Unnamed_Namespaces_and_Static_Variables">Unnamed Namespaces and
-Static Variables</a>.
-</p></div>
+Static Variables</a>.</p>
+<p lang="de">Abgesehen von wenigen Ausnahmen, setzt man seinen Code in einen
+Namensbereich. Dieser sollte einen eindeutigen Namen im Projekt aufweisen und
+möglicherweise aus einem Dateipfad bestehen. Es sollte keine <i>using</i>-Direktive
+verwendet werden (z.B. <code>using namespace foo</code>) und auch
+keine <i>inline</i>-Namensbereiche. Für unbenannte Namensbereiche siehe <a href="#Unnamed_Namespaces_and_Static_Variables">unbenannte Namensbereiche und
+  statische Variablen</a>.</p>
+</div>
 
 <div class="stylebody">
 
@@ -830,6 +836,8 @@ Static Variables</a>.
 <p lang="en">Namespaces subdivide the global scope
 into distinct, named scopes, and so are useful for preventing
 name collisions in the global scope.</p>
+<p lang="de">Namensbereiche unterteilen den globalen Namensbereich in
+einzelne Gültigkeitsbereiche und helfen so Namenskonflikte zu verhindern.</p>
 </div>
 
 <div class="pros">
@@ -837,6 +845,9 @@ name collisions in the global scope.</p>
 <p lang="en">Namespaces provide a method for preventing name conflicts
 in large programs while allowing most code to use reasonably
 short names.</p>
+<p lang="de">Namensbereiche sind die Methode der Wahl, um in grossen
+Programmen Namenskonflikte zu verhindern und ermöglichen dennoch die
+Verwendung von relativ kurzen Namen.</p>
 
 <p lang="en">For example, if two different projects have a class
 <code>Foo</code> in the global scope, these symbols may
@@ -845,10 +856,20 @@ places their code in a namespace, <code>project1::Foo</code>
 and <code>project2::Foo</code> are now distinct symbols that
 do not collide, and code within each project's namespace
 can continue to refer to <code>Foo</code> without the prefix.</p>
+<p lang="de">Eine Klasse <code>Foo</code>, definiert im globalen Namensraum
+zweier verschiedener Projekte, kann zu Kompilierzeit oder auch zu
+Laufzeit einen Namenskonflikt verursachen. Wenn jedes Projekt seinen
+Code in einen eigenen Namensbereich setzen würde (z.B. 
+<code>project1::Foo</code> and <code>project2::Foo</code>), dann
+wären dies zwei unterschiedliche Symbole, die nicht kollidieren können.
+Und Code in den jeweiligen Projekten kann weiterhin auf <code>Foo</code>
+referenzieren; ohne das Prefix.</p>
 
 <p lang="en">Inline namespaces automatically place their names in
 the enclosing scope. Consider the following snippet, for
 example:</p>
+<p lang="de">Inline-Namensbereiche setzen ihre Symbole in den umgebenden 
+Namensbereich. Betrachte den folgenden Codeausschnitt als Beispiel: </p>
 
 <pre>namespace X {
 inline namespace Y {
@@ -861,6 +882,10 @@ inline namespace Y {
 <code>X::foo()</code> are interchangeable. Inline
 namespaces are primarily intended for ABI compatibility
 across versions.</p>
+<p lang="de">Der Ausdruck <code>X::Y::foo()</code> und
+<code>X::foo()</code> sind austauschbar. Inline-Namensbereiche
+werden vorwiegend für ABI-Kompatibilität über verschiedene
+Versionen verwendet.</p>
 </div>
 
 <div class="cons">
@@ -868,31 +893,46 @@ across versions.</p>
 <p lang="en">Namespaces can be confusing, because they complicate
 the mechanics of figuring out what definition a name refers
 to.</p>
+<p lang="de">Namensbereiche können verstörend wirken, weil sie
+das Auffinden der Definition anhand eines Namens komplizieren.</p>
 
 <p lang="en">Inline namespaces, in particular, can be confusing
 because names aren't actually restricted to the namespace
 where they are declared. They are only useful as part of
 some larger versioning policy.</p>
+<p lang="de">Inline-Namensbereiche sind nicht auf 
+den Ort ihrer Deklaration beschränkt. Diese sind nur nötig
+als Teil einer grösseren Versionspolitik.</p>
 
 <p lang="en">In some contexts, it's necessary to repeatedly refer to
 symbols by their fully-qualified names. For deeply-nested
 namespaces, this can add a lot of clutter.</p>
+<p lang="de">In einzelnen Umgebungen ist es nötig, dass
+Symbole nur voll qualifiziert verwendet werden. Bei tief verschachtelten
+Namensbereichen kann dies einigen Balast nach sich ziehen.</p>
 </div>
 
 <div class="decision">
 
 <p lang="en">Namespaces should be used as follows:</p>
+<p lang="de">Namensbereiche sollten folgendermassen verwendet werden:</p>
 
 <ul>
-  <li lang="en">Follow the rules on <a href="#Namespace_Names">Namespace Names</a>.
-  </li><li lang="en">Terminate namespaces with comments as shown in the given examples.
-  </li><li lang="en">
+  <li lang="en">Follow the rules on <a href="#Namespace_Names">Namespace Names</a>.</li>
+  <li lang="de">Folge den Regeln von <a href="#Namespace_Names">Namen in Namensbereichen</a>.</li>
+  <li lang="en">Terminate namespaces with comments as shown in the given examples.</li>
+  <li lang="en">Beende einen Namensbereich mit einem Kommentar, wie im folgenden Beispiel aufgezeigt.</li>
+  <li>
 
   <p lang="en">Namespaces wrap the entire source file after
   includes,  
   <a href="https://gflags.github.io/gflags/">
   gflags</a> definitions/declarations
   and forward declarations of classes from other namespaces.</p>
+  <p lang="de">Namensbereiche umschliessen die ganze Quelldatei nach
+  den Includes, <a href="https://gflags.github.io/gflags/">
+  gflags</a> Definitionen/Deklarationen
+  und Vorwärtsdeklarationen von Klassen aus anderen Namensbereichen.</p>
 
 <pre>// In the .h file
 namespace mynamespace {
@@ -982,14 +1022,19 @@ inline void my_inline_function() {
 </div>
 </div>
 
-<h3 id="Unnamed_Namespaces_and_Static_Variables">Unnamed Namespaces and Static Variables</h3>
+<h3 id="Unnamed_Namespaces_and_Static_Variables">Unbenannte Namensräume und statische Variablen</h3>
 
 <div class="summary">
 <p lang="en">When definitions in a <code>.cc</code> file do not need to be
 referenced outside that file, place them in an unnamed
 namespace or declare them <code>static</code>. Do not use either
 of these constructs in <code>.h</code> files.
-</p></div>
+</p>
+<p lang="de">Wenn Definitionen in einer <code>.cc</code> Datei nicht von
+ausserhalb dieser Datei referenziert werden, platziere diese in einem
+unbenamten Namensraum oder deklariere sie <code>static</code>. Benutze keinen
+von beidem in <code>.h</code> Dateien.
+</div>
 
 <div class="stylebody">
 
@@ -1017,10 +1062,15 @@ Do not use internal linkage in <code>.h</code> files.</p>
 </div>
 </div>
 
-<h3 id="Nonmember,_Static_Member,_and_Global_Functions">Nonmember, Static Member, and Global Functions</h3>
+<h3 id="Nonmember,_Static_Member,_and_Global_Functions">Nicht-Member, statische Member, and globale Funktionen</h3>
 
 <div class="summary">
 <p lang="en">Prefer placing nonmember functions in a namespace; use completely global
+functions rarely. Prefer grouping functions with a namespace instead of
+using a class as if it were a namespace. Static methods of a class should
+generally be closely related to instances of the class or the class's static
+data.</p>
+<p lang="de">Prefer placing nonmember functions in a namespace; use completely global
 functions rarely. Prefer grouping functions with a namespace instead of
 using a class as if it were a namespace. Static methods of a class should
 generally be closely related to instances of the class or the class's static
@@ -1076,11 +1126,14 @@ its scope.</p>
 
 </div> 
 
-<h3 id="Local_Variables">Local Variables</h3>
+<h3 id="Local_Variables">Lokale Variablen</h3>
 
 <div class="summary">
 <p lang="en">Place a function's variables in the narrowest scope
 possible, and initialize variables in the declaration.</p>
+<p lang="de">Platziere eine Funktionsvariable im eingeschränktesten
+Gültigkeitsbereich möglich und initialisiere die Variablen in
+der Deklaration.</p>
 </div>
 
 <div class="stylebody">
@@ -1139,7 +1192,7 @@ for (int i = 0; i &lt; 1000000; ++i) {
 
 </div> 
 
-<h3 id="Static_and_Global_Variables">Static and Global Variables</h3>
+<h3 id="Static_and_Global_Variables">Statische und globale Variablen</h3>
 
 <div class="summary">
   <p lang="en">Variables of class type with <a href="http://en.cppreference.com/w/cpp/language/storage_duration#Storage_duration">
@@ -1221,17 +1274,20 @@ issue that we are trying to avoid.</p>
 
 </div> 
 
-<h2 id="Classes">Classes</h2>
+<h2 id="Classes">Klassen</h2>
 
 <p lang="en">Classes are the fundamental unit of code in C++. Naturally,
 we use them extensively. This section lists the main dos and
 don'ts you should follow when writing a class.</p>
 
-<h3 id="Doing_Work_in_Constructors">Doing Work in Constructors</h3>
+<h3 id="Doing_Work_in_Constructors">Was im Erzeuger abgeht</h3>
 
 <div class="summary">
 <p lang="en">Avoid virtual method calls in constructors, and avoid
 initialization that can fail if you can't signal an error.</p>
+<p lang="de">Vermeide Aufrufe von virtuellen Methoden in Erzeugerinnen.
+Kann kein Fehler signalisiert werden, dann vermeide Initialisierung, die 
+fehlschlagen kann.</p>
 </div>
 
 <div class="stylebody">
@@ -1292,12 +1348,13 @@ with correctly).</p>
 </div> 
 
 <a id="Explicit_Constructors"></a>
-<h3 id="Implicit_Conversions">Implicit Conversions</h3>
+<h3 id="Implicit_Conversions">Implizite Parameterumwandlung</h3>
 
 <div class="summary">
 <p lang="en">Do not define implicit conversions. Use the <code>explicit</code>
-keyword for conversion operators and single-argument
-constructors.</p>
+keyword for conversion operators and single-argument constructors.</p>
+<p lang="de">Definiere keine implizite Umwandlung. Benutze das Keyword <code>explicit</code>
+für Umwandlungs-Operatoren und Einzelargument-Erzeuger.</p>
 </div>
 
 <div class="stylebody">
@@ -1398,13 +1455,17 @@ also omit <code>explicit</code>, in order to support copy-initialization
 
 </div> 
 
-<h3 id="Copyable_Movable_Types">Copyable and Movable Types</h3>
+<h3 id="Copyable_Movable_Types">Kopierbare und verschiebbare Typen</h3>
 <a id="Copy_Constructors"></a>
 <div class="summary">
 <p lang="en">Support copying and/or moving if these operations are clear and meaningful
 for your type. Otherwise, disable the implicitly generated special functions
 that perform copies and moves.
-</p></div>
+</p>
+<p lang="de">Unterstütze das Kopieren oder Verschieben, wenn diese Operationen
+klar und sinnvoll sind für deinen Datentyp. Falls nicht, unterdrücke die
+implizit generierten Spezialfunktionen, die dafür vorgesehen sind.</p>
+</div>
 
 <div class="stylebody">
 
@@ -1521,11 +1582,13 @@ MyClass&amp; operator=(const MyClass&amp;) = delete;
 </div> 
 </div> 
 
-<h3 id="Structs_vs._Classes">Structs vs. Classes</h3>
+<h3 id="Structs_vs._Classes">Strukturen verglichen mit Klassen</h3>
 
 <div class="summary">
 <p lang="en">Use a <code>struct</code> only for passive objects that
       carry data; everything else is a <code>class</code>.</p>
+<p lang="de">Nimm <code>struct</code> nur für passive Objekte, die
+Daten beinhalten; alles andere ist eine <code>class</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -1560,11 +1623,13 @@ functors and traits.</p>
 
 </div> 
 
-<h3 id="Inheritance">Inheritance</h3>
+<h3 id="Inheritance">Vererbung</h3>
 
 <div class="summary">
 <p lang="en">Composition is often more appropriate than inheritance.
 When using inheritance, make it <code>public</code>.</p>
+<p lang="de">Komposition ist vielmals besser als Vererbung.
+Sobald Vererbung im Spiel ist, mach sie <code>public</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -1645,7 +1710,7 @@ destructor is virtual or not.</p>
 
 </div> 
 
-<h3 id="Multiple_Inheritance">Multiple Inheritance</h3>
+<h3 id="Multiple_Inheritance">Mehrfache Vererbung</h3>
 
 <div class="summary">
 <p lang="en">Only very rarely is multiple implementation inheritance
@@ -1654,6 +1719,11 @@ most one of the base classes has an implementation; all
 other base classes must be <a href="#Interfaces">pure
 interface</a> classes tagged with the
 <code>Interface</code> suffix.</p>
+<p lang="de">Nur selten ist die mehrfache Vererbung echt nützlich.
+Wir erlauben mehrfache Vererbung nur, wenn maximal eine Basisklasse
+eine Implementation trägt und wenn alle anderen Basisklassen 
+<a href="#Interfaces">reine Schnittstellen</a> sind mit dem Namenszusatz
+<code>Interface</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -1692,11 +1762,13 @@ this rule on Windows.</p>
 
 </div> 
 
-<h3 id="Interfaces">Interfaces</h3>
+<h3 id="Interfaces">Schnittstellen</h3>
 
 <div class="summary">
 <p lang="en">Classes that satisfy certain conditions are allowed, but
 not required, to end with an <code>Interface</code> suffix.</p>
+<p lang="de">Klassen, die gewisse Bedingungen erfüllen, dürfen den Namenszusatz
+<code>Interface</code> tragen, müssen aber nicht.</p>
 </div>
 
 <div class="stylebody">
@@ -1758,10 +1830,11 @@ to end with <code>Interface</code>.</p>
 
 </div> 
 
-<h3 id="Operator_Overloading">Operator Overloading</h3>
+<h3 id="Operator_Overloading">Überladung von Operatoren</h3>
 
 <div class="summary">
 <p lang="en">Overload operators judiciously. Do not create user-defined literals.</p>
+<p lang="de">Überlade Operatoren mit Bedacht. Kreiere keine benutzerdefinierten Wortketten.</p>
 </div>
 
 <div class="stylebody">
@@ -1893,7 +1966,7 @@ apply to operator overloading as well.</p>
 
 </div> 
 
-<h3 id="Access_Control">Access Control</h3>
+<h3 id="Access_Control">Zugriffskontrolle</h3>
 
 <div class="summary">
 <p lang="en"> Make data members <code>private</code>, unless they are
@@ -1907,7 +1980,7 @@ be <code>protected</code> when using
 Test</a>).</p>
 </div>
 
-<h3 id="Declaration_Order">Declaration Order</h3>
+<h3 id="Declaration_Order">Reihenfolge der Deklaration</h3>
 
 <div class="summary">
 <p lang="en">Group similar declarations together, placing public parts
@@ -1936,9 +2009,9 @@ Functions</a> for more details.</p>
 
 </div> 
 
-<h2 id="Functions">Functions</h2>
+<h2 id="Functions">Funktionen</h2>
 
-<h3 id="Function_Parameter_Ordering">Parameter Ordering</h3>
+<h3 id="Function_Parameter_Ordering">Reihenfolge der Parameter</h3>
 
 <div class="summary">
 <p lang="en">When defining a function, parameter order is: inputs, then
@@ -1964,7 +2037,7 @@ functions may require you to bend the rule.</p>
 
 </div> 
 
-<h3 id="Write_Short_Functions">Write Short Functions</h3>
+<h3 id="Write_Short_Functions">Schreibe kurze Funktionen</h3>
 
 <div class="summary">
 <p lang="en">Prefer small and focused functions.</p>
@@ -1994,11 +2067,13 @@ the function into smaller and more manageable pieces.</p>
 
 </div> 
 
-<h3 id="Reference_Arguments">Reference Arguments</h3>
+<h3 id="Reference_Arguments">Argumente als Referenzen</h3>
 
 <div class="summary">
 <p lang="en">All parameters passed by reference must be labeled
 <code>const</code>.</p>
+<p lang="de">Alle Parameter, die per Referenz übergeben werden, müssen als 
+<code>const</code> deklariert sein.</p>
 </div>
 
 <div class="stylebody">
@@ -2063,7 +2138,7 @@ doesn't exist.</p>
 
 </div> 
 
-<h3 id="Function_Overloading">Function Overloading</h3>
+<h3 id="Function_Overloading">Überladen von Funktionen</h3>
 
 <div class="summary">
 <p lang="en">Use overloaded functions (including constructors) only if a
@@ -2117,7 +2192,7 @@ arguments of the same type, consider making it take a
 
 </div> 
 
-<h3 id="Default_Arguments">Default Arguments</h3>
+<h3 id="Default_Arguments">Standardwerte für Argumente</h3>
 
 <div class="summary">
 <p lang="en">Default arguments are allowed on non-virtual functions
@@ -2176,7 +2251,7 @@ doubt, use overloads.</p>
 
 </div> 
 
-<h3 id="trailing_return">Trailing Return Type Syntax</h3>
+<h3 id="trailing_return">Neue Syntax mit hintangestelltem Rückgabetyp</h3>
 <div class="summary">
 <p lang="en">Use trailing return types only where using the ordinary syntax (leading
   return types) is impractical or much less readable.</p>
@@ -2239,7 +2314,7 @@ doubt, use overloads.</p>
 </div> 
 </div> 
 
-<h2 id="Google-Specific_Magic">Google-Specific Magic</h2>
+<h2 id="Google-Specific_Magic">Google eigene Magie</h2>
 
 
 
@@ -2249,7 +2324,7 @@ C++ that may differ from what you see elsewhere.</p>
 
  
 
-<h3 id="Ownership_and_Smart_Pointers">Ownership and Smart Pointers</h3>
+<h3 id="Ownership_and_Smart_Pointers">Besitztum und schlaue Zeiger</h3>
 
 <div class="summary">
 <p lang="en">Prefer to have single, fixed owners for dynamically
@@ -2416,9 +2491,9 @@ you can download
 
  
 
-<h2 id="Other_C++_Features">Other C++ Features</h2>
+<h2 id="Other_C++_Features">Andere C++ Besonderheiten</h2>
 
-<h3 id="Rvalue_references">Rvalue References</h3>
+<h3 id="Rvalue_references">Referenzen auf R-Werte</h3>
 
 <div class="summary">
 <p lang="en">Use rvalue references only to define move constructors and move assignment
@@ -2487,11 +2562,13 @@ moving a value from one object to another rather than copying it. </p>
 
 </div> 
 
-<h3 id="Friends">Friends</h3>
+<h3 id="Friends">Freunde</h3>
 
 <div class="summary">
 <p lang="en">We allow use of <code>friend</code> classes and functions,
 within reason.</p>
+<p lang="de">Wir erlauben das massvolle Benutzen von Klassen und Funktionen mit 
+<code>friend</code>-Deklaration.</p>
 </div>
 
 <div class="stylebody">
@@ -2515,10 +2592,11 @@ members.</p>
 
 </div> 
 
-<h3 id="Exceptions">Exceptions</h3>
+<h3 id="Exceptions">Ausnahmen</h3>
 
 <div class="summary">
 <p lang="en">We do not use C++ exceptions.</p>
+<p lang="de">Wir verwenden keine C++-Ausnahmen.</p>
 </div>
 
 <div class="stylebody">
@@ -2637,7 +2715,7 @@ this rule (no pun intended) for Windows code.</p>
 
 </div> 
 
-<h3 id="Run-Time_Type_Information__RTTI_">Run-Time Type Information (RTTI)</h3>
+<h3 id="Run-Time_Type_Information__RTTI_">Laufzeittypinformation (Run-Time Type Information oder RTTI)</h3>
 
 <div class="summary">
 <p lang="en">Avoid using Run Time Type Information (RTTI).</p>
@@ -2744,7 +2822,7 @@ workarounds disguise your true intent.</p>
 
 </div> 
 
-<h3 id="Casting">Casting</h3>
+<h3 id="Casting">Typumwandlung</h3>
 
 <div class="summary">
 <p lang="en">Use C++-style casts
@@ -2818,11 +2896,13 @@ RTTI section</a> for guidance on the use of
 
 </div> 
 
-<h3 id="Streams">Streams</h3>
+<h3 id="Streams">Datenströme</h3>
 
 <div class="summary">
 <p lang="en">Use streams where appropriate, and stick to "simple"
 usages.</p>
+<p lang="de">Verwende Datenströme, wenn angebracht, und bleibe bei "simpler"
+Benutzung.</p>
 </div>
 
 <div class="stylebody">
@@ -2925,7 +3005,7 @@ convention).</p>
 
 </div> 
 
-<h3 id="Preincrement_and_Predecrement">Preincrement and Predecrement</h3>
+<h3 id="Preincrement_and_Predecrement">Präinkrement and Prädekrement</h3>
 
 <div class="summary">
 <p lang="en">Use prefix form (<code>++i</code>) of the increment and
@@ -2974,7 +3054,7 @@ types, use pre-increment.</p>
 
 </div> 
 
-<h3 id="Use_of_const">Use of const</h3>
+<h3 id="Use_of_const">Die Benutzung von <i>const</i></h3>
 
 <div class="summary">
 <p lang="en">Use <code>const</code> whenever it makes sense. With C++11,
@@ -3046,7 +3126,7 @@ carefully considered first.</p>
 </div>
 
 <div class="stylepoint_subsection">
-<h4>Where to put the const</h4>
+<h4>Wohin mit const</h4>
 
 <p lang="en">Some people favor the form <code>int const *foo</code>
 to <code>const int* foo</code>. They argue that this is
@@ -3069,7 +3149,7 @@ consistent with the code around you!</p>
 
 </div> 
 
-<h3 id="Use_of_constexpr">Use of constexpr</h3>
+<h3 id="Use_of_constexpr">Die Benutzung von <i>constexpr</i></h3>
 
 <div class="summary">
 <p lang="en">In C++11, use <code>constexpr</code> to define true
@@ -3115,7 +3195,7 @@ enable their use with <code>constexpr</code>. Do not use
 
 </div> 
 
-<h3 id="Integer_Types">Integer Types</h3>
+<h3 id="Integer_Types">Ganzzahltypen</h3>
 
 <div class="summary">
 <p lang="en">Of the built-in C++ integer types, the only one used
@@ -3204,7 +3284,7 @@ behavior. </p>
 
 <div class="stylepoint_subsection">
 
-<h4>On Unsigned Integers</h4>
+<h4>Über vorzeichenlose Ganzzahlen</h4>
 
 <p lang="en">Some people, including some textbook authors,
 recommend using unsigned types to represent numbers that
@@ -3230,7 +3310,7 @@ type.</p>
 
 </div> 
 
-<h3 id="64-bit_Portability">64-bit Portability</h3>
+<h3 id="64-bit_Portability">64-bit Portabilität</h3>
 
 <div class="summary">
 <p lang="en">Code should be 64-bit and 32-bit friendly. Bear in mind
@@ -3379,7 +3459,7 @@ uint64_t my_mask = 3ULL &lt;&lt; 48;
 
 </div> 
 
-<h3 id="Preprocessor_Macros">Preprocessor Macros</h3>
+<h3 id="Preprocessor_Macros">Makros des Präprozessors</h3>
 
 <div class="summary">
 <p lang="en">Avoid defining macros, especially in headers; prefer
@@ -3468,7 +3548,7 @@ name (but upper case). </p>
 
 </div> 
 
-<h3 id="0_and_nullptr/NULL">0 and nullptr/NULL</h3>
+<h3 id="0_and_nullptr/NULL">0 und nullptr/NULL</h3>
 
 <div class="summary">
 <p lang="en">Use <code>0</code> for integers, <code>0.0</code> for
@@ -3624,7 +3704,7 @@ and <code>.second</code> (often const-ref).
 
 </div> 
 
-<h3 id="Braced_Initializer_List">Braced Initializer List</h3>
+<h3 id="Braced_Initializer_List">Geschwungene Initialisierungsliste</h3>
 
 <div class="summary">
 <p lang="en">You may use braced initializer lists.</p>
@@ -3718,11 +3798,13 @@ means can be confusing.</p>
 
 </div> 
 
-<h3 id="Lambda_expressions">Lambda expressions</h3>
+<h3 id="Lambda_expressions">Lambda-Ausdrücke</h3>
 
 <div class="summary">
 <p lang="en">Use lambda expressions where appropriate. Prefer explicit captures
 when the lambda will escape the current scope.</p>
+<p lang="en">Verwende Lambda-Ausdrücke wo angebracht. Bevorzuge explizite <i>captures</i>
+wenn die Lambda den gegenwärtigen Gültigkeitsbereich verlässt.</p>
 </div>
 
 <div class="stylebody">
@@ -3858,9 +3940,10 @@ make it more obvious to readers, as with
 
 </div> 
 
-<h3 id="Template_metaprogramming">Template metaprogramming</h3>
+<h3 id="Template_metaprogramming">Metaprogrammierung mittels Vorlagen</h3>
 <div class="summary">
 <p lang="en">Avoid complicated template programming.</p>
+<p lang="de">Gehe komplizierter Vorlagenprogrammierung aus dem Weg.</p>
 </div>
 
 <div class="stylebody">
@@ -3942,6 +4025,7 @@ and actionable from a user point of view.</p>
 <div class="summary">
 <p lang="en">Use only approved libraries from the Boost library
 collection.</p>
+<p lang="de">Benutze nur anerkannte Bibliotheken aus der Boost Bibliothekenkollektion.</p>
 </div>
 
 <div class="stylebody">
@@ -4228,7 +4312,7 @@ guide, the following C++11 features may not be used:</p>
 
 </div> 
 
-<h3 id="Nonstandard_Extensions">Nonstandard Extensions</h3>
+<h3 id="Nonstandard_Extensions">Nicht-Standard Erweiterungen</h3>
 
 <div class="summary">
 <p lang="en">Nonstandard extensions to C++ may not be used unless otherwise specified.</p>
@@ -4276,7 +4360,7 @@ guide, the following C++11 features may not be used:</p>
 </div>
 </div> 
 
-<h3 id="Aliases">Aliases</h3>
+<h3 id="Aliases">Zweitbezeichnung</h3>
 
 <div class="summary">
 <p lang="en">Public aliases are for the benefit of an API's user, and should be clearly documented.</p>
@@ -4365,7 +4449,7 @@ using std::unordered_set;
 </div>
 </div> 
 
-<h2 id="Naming">Naming</h2>
+<h2 id="Naming">Namensgebung</h2>
 
 <p lang="en">The most important consistency rules are those that govern
 naming. The style of a name immediately informs us what sort of
@@ -4381,7 +4465,7 @@ consistency is more important than individual preferences in this
 area, so regardless of whether you find them sensible or not,
 the rules are the rules.</p>
 
-<h3 id="General_Naming_Rules">General Naming Rules</h3>
+<h3 id="General_Naming_Rules">Generelle Namensregeln</h3>
 
 <div class="summary">
 <p lang="en">Names should be descriptive; avoid abbreviation.</p>
@@ -4421,7 +4505,7 @@ variable names</a>.
 
 </p></div> 
 
-<h3 id="File_Names">File Names</h3>
+<h3 id="File_Names">Dateinamen</h3>
 
 <div class="summary">
 <p lang="en">Filenames should be all lowercase and can include
@@ -4464,7 +4548,7 @@ directly into your <code>.h</code> file. </p>
 
 </div> 
 
-<h3 id="Type_Names">Type Names</h3>
+<h3 id="Type_Names">Typnamen</h3>
 
 <div class="summary">
 <p lang="en">Type names start with a capital letter and have a capital
@@ -4496,7 +4580,7 @@ enum UrlTableErrors { ...
 
 </div> 
 
-<h3 id="Variable_Names">Variable Names</h3>
+<h3 id="Variable_Names">Variablennamen</h3>
 
 <div class="summary">
 <p lang="en">The names of variables (including function parameters) and data members are
@@ -4508,7 +4592,7 @@ structs) additionally have trailing underscores. For instance:
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">Common Variable names</h4>
+<h4 class="stylepoint_subsection">Gemeine Variablennamen</h4>
 
 <p lang="en">For example:</p>
 
@@ -4519,7 +4603,7 @@ string tablename;   // OK - all lowercase.
 <pre class="badcode">string tableName;   // Bad - mixed case.
 </pre>
 
-<h4 class="stylepoint_subsection">Class Data Members</h4>
+<h4 class="stylepoint_subsection">Klassen-Daten-Member</h4>
 
 <p lang="en">Data members of classes, both static and non-static, are
 named like ordinary nonmember variables, but with a
@@ -4534,7 +4618,7 @@ trailing underscore.</p>
 };
 </pre>
 
-<h4 class="stylepoint_subsection">Struct Data Members</h4>
+<h4 class="stylepoint_subsection">Strukturen-Daten-Member</h4>
 
 <p lang="en">Data members of structs, both static and non-static,
 are named like ordinary nonmember variables. They do not have
@@ -4554,7 +4638,7 @@ versus a class.</p>
 
 </div> 
 
-<h3 id="Constant_Names">Constant Names</h3>
+<h3 id="Constant_Names">Konstantennamen</h3>
 
 <div class="summary">
   <p lang="en">Variables declared constexpr or const, and whose value is fixed for
@@ -4575,7 +4659,7 @@ versus a class.</p>
 
 </p></div> 
 
-<h3 id="Function_Names">Function Names</h3>
+<h3 id="Function_Names">Funktionennamen</h3>
 
 <div class="summary">
 <p lang="en">Regular functions have mixed case; accessors and mutators may be named
@@ -4608,7 +4692,7 @@ set_count(int count)</code>.</p>
 
 </div> 
 
-<h3 id="Namespace_Names">Namespace Names</h3>
+<h3 id="Namespace_Names">Namen von Namensräumen</h3>
 
 <div class="summary">
 <p lang="en">Namespace names are all lower-case. Top-level namespace names are
@@ -4652,7 +4736,7 @@ in <code>frobber.h</code>)</p>
 
 </div> 
 
-<h3 id="Enumerator_Names">Enumerator Names</h3>
+<h3 id="Enumerator_Names">Namen von Aufzähltypen</h3>
 
 <div class="summary">
 <p lang="en">Enumerators (for both scoped and unscoped enums) should be named <i>either</i> like
@@ -4696,7 +4780,7 @@ names are actually causing a compile-time problem.</p>
 
 </div> 
 
-<h3 id="Macro_Names">Macro Names</h3>
+<h3 id="Macro_Names">Makronamen</h3>
 
 <div class="summary">
 <p lang="en">You're not really going to <a href="#Preprocessor_Macros">
@@ -4717,7 +4801,7 @@ named with all capitals and underscores.</p>
 
 </div> 
 
-<h3 id="Exceptions_to_Naming_Rules">Exceptions to Naming Rules</h3>
+<h3 id="Exceptions_to_Naming_Rules">Ausnahmen zu den Namensregeln</h3>
 
 <div class="summary">
 <p lang="en">If you are naming something that is analogous to an
@@ -4747,7 +4831,7 @@ naming convention scheme.</p>
 
 </div> 
 
-<h2 id="Comments">Comments</h2>
+<h2 id="Comments">Kommentare</h2>
 
 <p lang="en">Though a pain to write, comments are absolutely vital to
 keeping our code readable. The following rules describe what
@@ -4762,7 +4846,7 @@ contributor who will need to
 understand your code. Be generous &#8212; the next
 one may be you!</p>
 
-<h3 id="Comment_Style">Comment Style</h3>
+<h3 id="Comment_Style">Kommentarstil</h3>
 
 <div class="summary">
 <p lang="en">Use either the <code>//</code> or <code>/* */</code>
@@ -4778,7 +4862,7 @@ comment and what style you use where.</p>
 
 </div> 
 
-<h3 id="File_Comments">File Comments</h3>
+<h3 id="File_Comments">Dateikommentare</h3>
 
 <div class="summary">
 <p lang="en">Start each file with license boilerplate.</p>
@@ -4792,8 +4876,7 @@ must have file comments.</p>
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">Legal Notice and Author
-Line</h4>
+<h4 class="stylepoint_subsection">Rechtliche Hinweise und Autorenbezeichnung</h4>
 
 
 
@@ -4805,7 +4888,7 @@ BSD, LGPL, GPL).</p>
 <p lang="en">If you make significant changes to a file with an
 author line, consider deleting the author line.</p>
 
-<h4 class="stylepoint_subsection">File Contents</h4>
+<h4 class="stylepoint_subsection">Dateiinhalt</h4>
 
 <p lang="en">If a <code>.h</code> declares multiple abstractions, the file-level comment
 should broadly describe the contents of the file, and how the abstractions are
@@ -4818,7 +4901,7 @@ not at the file level.</p>
 
 </div> 
 
-<h3 id="Class_Comments">Class Comments</h3>
+<h3 id="Class_Comments">Klassenkommentare</h3>
 
 <div class="summary">
 <p lang="en">Every non-obvious class declaration should have an accompanying
@@ -4856,7 +4939,7 @@ should accompany the implementation of the class's methods.</p>
 
 </div> 
 
-<h3 id="Function_Comments">Function Comments</h3>
+<h3 id="Function_Comments">Funktionenkommentare</h3>
 
 <div class="summary">
 <p lang="en">Declaration comments describe use of the function (when it is
@@ -4866,7 +4949,7 @@ operation.</p>
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">Function Declarations</h4>
+<h4 class="stylepoint_subsection">Funktionsdeklarationen</h4>
 
 <p lang="en">Almost every function declaration should have comments immediately
 preceding it that describe what the function does and how to use
@@ -4946,7 +5029,7 @@ cleanup the destructor does. If this is trivial, just
 skip the comment. It is quite common for destructors not
 to have a header comment.</p>
 
-<h4 class="stylepoint_subsection">Function Definitions</h4>
+<h4 class="stylepoint_subsection">Funktionsdefinitionen</h4>
 
 <p lang="en">If there is anything tricky about how a function does
 its job, the function definition should have an
@@ -4967,7 +5050,7 @@ focus of the comments should be on how it does it.</p>
 
 </div> 
 
-<h3 id="Variable_Comments">Variable Comments</h3>
+<h3 id="Variable_Comments">Variablenkommentare</h3>
 
 <div class="summary">
 <p lang="en">In general the actual name of the variable should be
@@ -4977,7 +5060,7 @@ is used for. In certain cases, more comments are required.</p>
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">Class Data Members</h4>
+<h4 class="stylepoint_subsection">Klassen-Daten-Member</h4>
 
 <p lang="en">The purpose of each class data member (also called an instance
 variable or member variable) must be clear. If there are any
@@ -4996,7 +5079,7 @@ obvious. For example:</p>
  int num_total_entries_;
 </pre>
 
-<h4 class="stylepoint_subsection">Global Variables</h4>
+<h4 class="stylepoint_subsection">Globale Variablen</h4>
 
 <p lang="en">All global variables should have a comment describing what they
 are, what they are used for, and (if unclear) why it needs to be
@@ -5008,7 +5091,7 @@ const int kNumTestCases = 6;
 
 </div> 
 
-<h3 id="Implementation_Comments">Implementation Comments</h3>
+<h3 id="Implementation_Comments">Kommentare in der Implementation</h3>
 
 <div class="summary">
 <p lang="en">In your implementation you should have comments in tricky,
@@ -5017,7 +5100,7 @@ non-obvious, interesting, or important parts of your code.</p>
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">Explanatory Comments</h4>
+<h4 class="stylepoint_subsection">Erklärende Kommentare</h4>
 
 <p lang="en">Tricky or complicated code blocks should have comments
 before them. Example:</p>
@@ -5031,7 +5114,7 @@ for (int i = 0; i &lt; result-&gt;size(); i++) {
 }
 </pre>
 
-<h4 class="stylepoint_subsection">Line Comments</h4>
+<h4 class="stylepoint_subsection">Zeilenkommentare</h4>
 
 <p lang="en">Also, lines that are non-obvious should get a comment
 at the end of the line. These end-of-line comments should
@@ -5065,7 +5148,7 @@ std::vector&lt;string&gt; list{
 DoSomething(); /* For trailing block comments, one space is fine. */
 </pre>
 
-<h4 class="stylepoint_subsection">Function Argument Comments</h4>
+<h4 class="stylepoint_subsection">Kommentare zu Funktionsargumenten</h4>
 
 <p lang="en">When the meaning of a function argument is nonobvious, consider
 one of the following remedies:</p>
@@ -5112,7 +5195,7 @@ const DecimalNumber product =
     CalculateProduct(values, options, /*completion_callback=*/nullptr);
 </pre>
 
-<h4 class="stylepoint_subsection">Don'ts</h4>
+<h4 class="stylepoint_subsection">Was du besser lässt</h4>
 
 <p lang="en">Do not state the obvious. In particular, don't literally describe what
 code does, unless the behavior is nonobvious to a reader who understands
@@ -5147,7 +5230,7 @@ the example above would be obvious:
 
 </div> 
 
-<h3 id="Punctuation,_Spelling_and_Grammar">Punctuation, Spelling and Grammar</h3>
+<h3 id="Punctuation,_Spelling_and_Grammar">Satzzeichen, Schreibweise und Grammatik</h3>
 
 <div class="summary">
 <p lang="en">Pay attention to punctuation, spelling, and grammar; it is
@@ -5173,7 +5256,7 @@ goal.</p>
 
 </div> 
 
-<h3 id="TODO_Comments">TODO Comments</h3>
+<h3 id="TODO_Comments">TODO-Kommentare</h3>
 
 <div class="summary">
 <p lang="en">Use <code>TODO</code> comments for code that is temporary,
@@ -5213,7 +5296,7 @@ handle XML responses.").</p>
 
 </div> 
 
-<h3 id="Deprecation_Comments">Deprecation Comments</h3>
+<h3 id="Deprecation_Comments">Kommentare um Überholtes zu markieren</h3>
 
 <div class="summary">
 <p lang="en">Mark deprecated interface points with <code>DEPRECATED</code>
@@ -5255,7 +5338,7 @@ new interface point.</p>
 
 </div> 
 
-<h2 id="Formatting">Formatting</h2>
+<h2 id="Formatting">Formatierung</h2>
 
 <p lang="en">Coding style and formatting are pretty arbitrary, but a
 
@@ -5276,7 +5359,7 @@ created a
 <a href="https://raw.githubusercontent.com/google/styleguide/gh-pages/google-c-style.el">
 settings file for emacs</a>.</p>
 
-<h3 id="Line_Length">Line Length</h3>
+<h3 id="Line_Length">Zeilenlänge</h3>
 
 <div class="summary">
 <p lang="en">Each line of text in your code should be at most 80
@@ -5333,7 +5416,7 @@ the maximum length. </p>
 
 </div> 
 
-<h3 id="Non-ASCII_Characters">Non-ASCII Characters</h3>
+<h3 id="Non-ASCII_Characters">Nicht-ASCII Zeichen</h3>
 
 <div class="summary">
 <p lang="en">Non-ASCII characters should be rare, and must use UTF-8
@@ -5379,7 +5462,7 @@ interacts with the Windows API, which uses
 
 </div> 
 
-<h3 id="Spaces_vs._Tabs">Spaces vs. Tabs</h3>
+<h3 id="Spaces_vs._Tabs">Leerzeichen gegenüber Tabulator</h3>
 
 <div class="summary">
 <p lang="en">Use only spaces, and indent 2 spaces at a time.</p>
@@ -5393,7 +5476,7 @@ hit the tab key.</p>
 
 </div> 
 
-<h3 id="Function_Declarations_and_Definitions">Function Declarations and Definitions</h3>
+<h3 id="Function_Declarations_and_Definitions">Funktionsdeklarationen und -definitionen</h3>
 
 <div class="summary">
 <p lang="en">Return type on the same line as function name, parameters
@@ -5512,7 +5595,7 @@ return type:</p>
 
 </div> 
 
-<h3 id="Formatting_Lambda_Expressions">Lambda Expressions</h3>
+<h3 id="Formatting_Lambda_Expressions">Lambda-Ausdrücke</h3>
 
 <div class="summary">
 <p lang="en">Format parameters and bodies as for any other function, and capture
@@ -5536,7 +5619,7 @@ digits.erase(std::remove_if(digits.begin(), digits.end(), [&amp;blacklist](int i
 
 </div> 
 
-<h3 id="Function_Calls">Function Calls</h3>
+<h3 id="Function_Calls">Funktionsaufrufe</h3>
 
 <div class="summary">
 <p lang="en">Either write the call all on a single line, wrap the
@@ -5614,7 +5697,7 @@ my_widget.Transform(x1, x2, x3,
 
 </div> 
 
-<h3 id="Braced_Initializer_List_Format">Braced Initializer List Format</h3>
+<h3 id="Braced_Initializer_List_Format">Format der geschwungenen Initialisierungsliste</h3>
 
 <div class="summary">
 <p lang="en">Format a <a href="#Braced_Initializer_List">braced initializer list</a>
@@ -5657,7 +5740,7 @@ MyType m = {  // Here, you could also break before {.
 
 </div> 
 
-<h3 id="Conditionals">Conditionals</h3>
+<h3 id="Conditionals">Bedingte Verzweigung</h3>
 
 <div class="summary">
 <p lang="en">Prefer no spaces inside parentheses. The <code>if</code>
@@ -5772,7 +5855,7 @@ if (condition) {
 
 </div> 
 
-<h3 id="Loops_and_Switch_Statements">Loops and Switch Statements</h3>
+<h3 id="Loops_and_Switch_Statements">Schleifen- und Fallunterscheidungsanweisung</h3>
 
 <div class="summary">
 <p lang="en">Switch statements may use braces for blocks. Annotate
@@ -5844,7 +5927,7 @@ while (condition) continue;  // Good - continue indicates no logic.
 
 </div> 
 
-<h3 id="Pointer_and_Reference_Expressions">Pointer and Reference Expressions</h3>
+<h3 id="Pointer_and_Reference_Expressions">Zeiger- und Referenzenausdrücke</h3>
 
 <div class="summary">
 <p lang="en">No spaces around period or arrow. Pointer operators do not
@@ -5903,7 +5986,7 @@ that file.</p>
 
 </div> 
 
-<h3 id="Boolean_Expressions">Boolean Expressions</h3>
+<h3 id="Boolean_Expressions">Boolsche Ausdrücke</h3>
 
 <div class="summary">
 <p lang="en">When you have a boolean expression that is longer than the
@@ -5938,7 +6021,7 @@ the word operators, such as <code>and</code> and
 
 </div> 
 
-<h3 id="Return_Values">Return Values</h3>
+<h3 id="Return_Values">Rückgabewerte</h3>
 
 <div class="summary">
 <p lang="en">Do not needlessly surround the <code>return</code>
@@ -5964,7 +6047,7 @@ return(result);                // return is not a function!
 
  
 
-<h3 id="Variable_and_Array_Initialization">Variable and Array Initialization</h3>
+<h3 id="Variable_and_Array_Initialization">Variablen- und Arrayinitialisierung</h3>
 
 <div class="summary">
 <p lang="en">Your choice of <code>=</code>, <code>()</code>, or
@@ -6008,7 +6091,7 @@ int pi{3.14};  // Compile error: narrowing conversion.
 
 </div> 
 
-<h3 id="Preprocessor_Directives">Preprocessor Directives</h3>
+<h3 id="Preprocessor_Directives">Präprozessordirektiven</h3>
 
 <div class="summary">
 <p lang="en">The hash mark that starts a preprocessor directive should
@@ -6044,7 +6127,7 @@ beginning of the line.</p>
 
 </div> 
 
-<h3 id="Class_Format">Class Format</h3>
+<h3 id="Class_Format">Formatierung von Klassen</h3>
 
 <div class="summary">
 <p lang="en">Sections in <code>public</code>, <code>protected</code> and
@@ -6107,7 +6190,7 @@ needed) is:</p>
 
 </div> 
 
-<h3 id="Constructor_Initializer_Lists">Constructor Initializer Lists</h3>
+<h3 id="Constructor_Initializer_Lists">Initialisierungslisten in Erzeugerinnen</h3>
 
 <div class="summary">
 <p lang="en">Constructor initializer lists can be all on one line or
@@ -6146,7 +6229,7 @@ MyClass::MyClass(int var)
 
 </div> 
 
-<h3 id="Namespace_Formatting">Namespace Formatting</h3>
+<h3 id="Namespace_Formatting">Formatierung von Namensräumen</h3>
 
 <div class="summary">
 <p lang="en">The contents of namespaces are not indented.</p>
@@ -6187,7 +6270,7 @@ namespace bar {
 
 </div> 
 
-<h3 id="Horizontal_Whitespace">Horizontal Whitespace</h3>
+<h3 id="Horizontal_Whitespace">Horizontale Leerzeichen</h3>
 
 <div class="summary">
 <p lang="en">Use of horizontal whitespace depends on location. Never put
@@ -6196,7 +6279,7 @@ trailing whitespace at the end of a line.</p>
 
 <div class="stylebody">
 
-<h4 class="stylepoint_subsection">General</h4>
+<h4 class="stylepoint_subsection">Generell</h4>
 
 <pre>void f(bool b) {  // Open braces should always have a space before them.
   ...
@@ -6225,7 +6308,7 @@ clean-up
 operation (preferably when no-one
 else is working on the file).</p>
 
-<h4 class="stylepoint_subsection">Loops and Conditionals</h4>
+<h4 class="stylepoint_subsection">Schleifen und bedingte Verzweigungen</h4>
 
 <pre>if (b) {          // Space after the keyword in conditions and loops.
 } else {          // Spaces around else.
@@ -6253,7 +6336,7 @@ switch (i) {
   case 2: break;  // Use a space after a colon if there's code after it.
 </pre>
 
-<h4 class="stylepoint_subsection">Operators</h4>
+<h4 class="stylepoint_subsection">Operatoren</h4>
 
 <pre>// Assignment operators always have spaces around them.
 x = 0;
@@ -6272,7 +6355,7 @@ if (x &amp;&amp; !y)
   ...
 </pre>
 
-<h4 class="stylepoint_subsection">Templates and Casts</h4>
+<h4 class="stylepoint_subsection">Vorlagen und Typumwandlungen</h4>
 
 <pre>// No spaces inside the angle brackets (&lt; and &gt;), before
 // &lt;, or between &gt;( in a cast
@@ -6285,7 +6368,7 @@ std::vector&lt;char *&gt; x;
 
 </div> 
 
-<h3 id="Vertical_Whitespace">Vertical Whitespace</h3>
+<h3 id="Vertical_Whitespace">Vertikale Leerzeichen</h3>
 
 <div class="summary">
 <p lang="en">Minimize use of vertical whitespace.</p>
@@ -6320,20 +6403,25 @@ useful:</p>
 
 </div> 
 
-<h2 id="Exceptions_to_the_Rules">Exceptions to the Rules</h2>
+<h2 id="Exceptions_to_the_Rules">Ausnahmen zu den Regeln</h2>
 
 <p lang="en">The coding conventions described above are mandatory.
 However, like all good rules, these sometimes have exceptions,
 which we discuss here.</p>
+<p lang="de">Die oben beschriebenen Programmierkonventionen sind verbindlich. 
+Andererseits, wie alle guten Regeln, haben auch diese Ausnahmen, die wir im Folgenden
+besprechen.</p>
 
  
 
 <div>
-<h3 id="Existing_Non-conformant_Code">Existing Non-conformant Code</h3>
+<h3 id="Existing_Non-conformant_Code">Existierender, nicht konformer Code</h3>
 
 <div class="summary">
 <p lang="en">You may diverge from the rules when dealing with code that
 does not conform to this style guide.</p>
+<p lang="de">Von den Regeln darf abgewichen werden, wenn mit Code gearbeitet
+wird, der nicht mit dieser Stilvorgabe vereinbar ist.</p>
 </div>
 
 <div class="stylebody">
@@ -6352,7 +6440,7 @@ local consistency, too.</p>
 
  
 
-<h3 id="Windows_Code">Windows Code</h3>
+<h3 id="Windows_Code">Code für Windows</h3>
 
 <div class="summary">
 <p lang="en"> Windows
@@ -6361,6 +6449,12 @@ conventions, mainly derived from the conventions in Windows
 headers and other Microsoft code. We want to make it easy
 for anyone to understand your code, so we have a single set
 of guidelines for everyone writing C++ on any platform.</p>
+<p lang="en">Windowsprogrammierer haben ihre eigenen 
+Konventionen erarbeitet, hauptsächlich aus den Windows-Header
+und anderem Code von Microsoft. Wir wollen es für jeden einfach
+machen, deinen Code zu verstehen. Deshalb haben wir einen
+einzigen Satz an Vorgaben für alle, die C++ Code schreiben, auf
+jeder Plattform.</p>
 </div>
 
 <div class="stylebody">
@@ -6441,7 +6535,7 @@ occasionally need to break on Windows:</p>
 
 </div> 
 
-<h2 class="ignoreLink">Parting Words</h2>
+<h2 class="ignoreLink">Verabschiedende Worte</h2>
 
 <p lang="en">Use common sense and <em>BE CONSISTENT</em>.</p>
 
