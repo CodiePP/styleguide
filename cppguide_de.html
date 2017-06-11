@@ -1280,7 +1280,7 @@ issue that we are trying to avoid.</p>
 we use them extensively. This section lists the main dos and
 don'ts you should follow when writing a class.</p>
 
-<h3 id="Doing_Work_in_Constructors">Was im Erzeuger abgeht</h3>
+<h3 id="Doing_Work_in_Constructors">Was in der Erzeugerin abgeht</h3>
 
 <div class="summary">
 <p lang="en">Avoid virtual method calls in constructors, and avoid
@@ -1978,6 +1978,12 @@ be <code>protected</code> when using
 
 <a href="https://github.com/google/googletest">Google
 Test</a>).</p>
+<p lang="de">Mach Daten-Member <code>private</code>, ausser sie sind
+<code>static const</code> (und folge <a href="#Constant_Names">
+Namensgebung für Konstanten</a>). Aus technischen Gründen
+erlauben wir <code>protected</code> für Data-Member in einer Testklasse 
+bei Verwendung von
+<a href="https://github.com/google/googletest">Google Test</a>).</p>
 </div>
 
 <h3 id="Declaration_Order">Reihenfolge der Deklaration</h3>
@@ -1985,6 +1991,8 @@ Test</a>).</p>
 <div class="summary">
 <p lang="en">Group similar declarations together, placing public parts
 earlier.</p>
+<p lang="de">Gruppiere ähnliche Deklarationen zusammen und platziere
+die öffentlichen (<code>public</public>) Teile am Anfang.</p> 
 </div>
 
 <div class="stylebody">
@@ -2016,6 +2024,8 @@ Functions</a> for more details.</p>
 <div class="summary">
 <p lang="en">When defining a function, parameter order is: inputs, then
 outputs.</p>
+<p lang="de">Bei der Definition von Funktionen ist die Reihenfolge der
+Parameter: zuerst Eingabe-, dann Ausgabeparameter.</p>
 </div>
 
 <div class="stylebody">
@@ -2041,6 +2051,7 @@ functions may require you to bend the rule.</p>
 
 <div class="summary">
 <p lang="en">Prefer small and focused functions.</p>
+<p lang="de">Bevorzuge kleine und auf-den-Punkt Funktionen.</p>
 </div>
 
 <div class="stylebody">
@@ -2145,6 +2156,9 @@ doesn't exist.</p>
 reader looking at a call site can get a good idea of what
 is happening without having to first figure out exactly
 which overload is being called.</p>
+<p lang="de">Benutze die Überladung von Funktionen (auch Erzeugerinnen)
+nur, wenn es für den Leser klar ist, in welche überladene Funktion an einer
+Aufrufstelle wirklich verzweigt wird.</p>
 </div>
 
 <div class="stylebody">
@@ -2200,6 +2214,12 @@ when the default is guaranteed to always have the same
 value. Follow the same restrictions as for <a href="#Function_Overloading">function overloading</a>, and
 prefer overloaded functions if the readability gained with
 default arguments doesn't outweigh the downsides below.</p>
+<p lang="de">Standardwerte für Argumente sind erlaubt in
+nicht-virtuellen Funktionen, wenn die Evaluation des Standardwerts
+immer zum gleichen Resultat führt. Es gelten die gleichen Einschränkung wie für
+<a href="#Function_Overloading">Überladen von Funktionen</a>.
+Benutze lieber überladene Funktionen, wenn die gewonnene Lesbarkeit
+mit Standardwerten nicht deren Nachteile überwiegt (s. unten).</p>
 </div>
 
 <div class="stylebody">
@@ -2255,6 +2275,9 @@ doubt, use overloads.</p>
 <div class="summary">
 <p lang="en">Use trailing return types only where using the ordinary syntax (leading
   return types) is impractical or much less readable.</p>
+<p lang="de">Benutze die hintangestellten Rückgabetypen nur, wenn die
+gewöhnliche Schreibweise (vorangestellter Rückgabetyp) unpraktisch oder
+viel weniger lesbar ist.</p>
 </div>
 
 <div class="definition">
@@ -2330,6 +2353,9 @@ C++ that may differ from what you see elsewhere.</p>
 <p lang="en">Prefer to have single, fixed owners for dynamically
 allocated objects. Prefer to transfer ownership with smart
 pointers.</p>
+<p lang="de">Bevorzuge einzelne und fest zugewiesene Besitzer
+für dynamisch erstellte Objekte. Wird das Objekt an einen
+anderen Besitzer übergeben, dann mit schlauen Pointern.</p>
 </div>
 
 <div class="stylebody">
@@ -2466,6 +2492,8 @@ do use shared ownership, prefer to use
 <div class="summary">
 <p lang="en">Use <code>cpplint.py</code>
 to detect style errors.</p>
+<p lang="de">Um Abweichungen vom Stil zu verfolgen,
+benutze <code>cpplint.py</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -2497,8 +2525,10 @@ you can download
 
 <div class="summary">
 <p lang="en">Use rvalue references only to define move constructors and move assignment
-operators, or for perfect forwarding.
-</p>
+operators, or for perfect forwarding.</p>
+<p lang="de">Benutze Referenzen auf R-Werte nur, um Verschiebe-Erzeugerinnen
+und Verschiebe-Zuweisungsoperatoren zu definieren; Oder auch für das perfekte
+forwarding (TODO).</p>
 </div>
 
 <div class="stylebody">
@@ -2719,6 +2749,7 @@ this rule (no pun intended) for Windows code.</p>
 
 <div class="summary">
 <p lang="en">Avoid using Run Time Type Information (RTTI).</p>
+<p lang="en">Lass ab von der Laufzeittypinformation (Run Time Type Information oder RTTI).</p>
 </div>
 
 <div class="stylebody">
@@ -2832,6 +2863,15 @@ initialization for conversion of arithmetic types like
 cast formats like
 <code>int y = (int)x</code> or <code>int y = int(x)</code> (but the latter
 is okay when invoking a constructor of a class type).</p>
+<p lang="en">Benutze die C++-Typumwandlungen
+wie <code>static_cast&lt;float&gt;(double_value)</code> oder die
+Initialisierung mittels geschwungener Klammern für die Umwandlung
+von arithmetischen Ausdrücken:
+<code>int64 y = int64{1} &lt;&lt; 42</code>. 
+Versuche nicht, Typumwandlungsformate wie die folgenden zu benutzen:
+<code>int y = (int)x</code> oder <code>int y = int(x)</code>
+(eigentlich ist der zweite Ausdruck gültig für den Aufruf einer Erzeugerin
+einer Klasse).</p>
 </div>
 
 <div class="stylebody">
@@ -3011,6 +3051,8 @@ convention).</p>
 <p lang="en">Use prefix form (<code>++i</code>) of the increment and
 decrement operators with iterators and other template
 objects.</p>
+<p lang="de">Nimm die Präfixform (<code>++i</code>) des Inkrement-
+und Dekrementoperators im Umfeld von Iteratoren oder anderen Vorlagenobjekten.</p>
 </div>
 
 <div class="stylebody">
@@ -3060,6 +3102,8 @@ types, use pre-increment.</p>
 <p lang="en">Use <code>const</code> whenever it makes sense. With C++11,
 <code>constexpr</code> is a better choice for some uses of
 const.</p>
+<p lang="de">Wann immer es Sinn macht, benutze <code>const</code>. In C++11 ist
+<code>constexpr</code> manchmal die bessere Variante.</p>
 </div>
 
 <div class="stylebody">
@@ -3154,6 +3198,8 @@ consistent with the code around you!</p>
 <div class="summary">
 <p lang="en">In C++11, use <code>constexpr</code> to define true
 constants or to ensure constant initialization.</p>
+<p lang="de">In C++11 benutze <code>constexpr</code> um wirkliche
+Konstanten zu definieren oder um deren Initialisierung sicher zu stellen.</p>
 </div>
 
 <div class="stylebody">
@@ -3212,6 +3258,18 @@ Keep in mind that even if your value won't ever be too large
 for an <code>int</code>, it may be used in intermediate
 calculations which may require a larger type. When in doubt,
 choose a larger type.</p>
+<p lang="de">Von den eingebauten C++ Ganzzahltypen benutze
+nur <code>int</code>. Wenn eine Programm eine Variable von einer
+anderen Grösse braucht, dann nimm die präzisen Ganzzahltypen
+wie in <code>&lt;stdint.h&gt;</code> definiert (z.B. 
+<code>int16_t</code>). Sofern Werte deiner Variable grösser als 
+ 2^31 (2GiB) werden könnten, dann benutze einen 64-Bit Datentyp 
+wie <code>int64_t</code>.
+Beachte aber, dass auch wenn die Werte nie grösser werden als
+für einen <code>int</code> möglich ist, es Zwischenwerte in
+Berechnungen geben könnte, die einen grösseren Wert darstellen.
+Wenn Zweifel bestehen, wähle vorsichtshalber den grösseren 
+Datentyp.</p>
 </div>
 
 <div class="stylebody">
@@ -3315,6 +3373,9 @@ type.</p>
 <div class="summary">
 <p lang="en">Code should be 64-bit and 32-bit friendly. Bear in mind
 problems of printing, comparisons, and structure alignment.</p>
+<p lang="de">Dein Programm sollte sowohl unter 64-Bit als auch unter
+32-Bit laufen. Behalte im Hinterkopf die Probleme vom Drucken über
+Wertvergleiche bis zur Speicherausrichtung von Datenstrukturen.</p>
 </div>
 
 <div class="stylebody">
@@ -3466,6 +3527,12 @@ uint64_t my_mask = 3ULL &lt;&lt; 48;
 inline functions, enums, and <code>const</code> variables.
 Name macros with a project-specific prefix. Do not use
 macros to define pieces of a C++ API.</p>
+<p lang="de">Anstelle von Makros, speziell in Headern definiert,
+schreib lieber <i>inline</i>-Funktionen, <i>enums</i> und 
+<code>const</code> Variablen.
+Deine Makros sollten einen projektspezifischen Präfix im 
+Namen tragen. Keine Makros um eine Programmierschnittstelle
+(API) zu definieren.</p>
 </div>
 
 <div class="stylebody">
@@ -3554,12 +3621,17 @@ name (but upper case). </p>
 <p lang="en">Use <code>0</code> for integers, <code>0.0</code> for
 reals, <code>nullptr</code> (or <code>NULL</code>) for
 pointers, and <code>'\0'</code> for chars.</p>
+<p lang="de">Schreibe <code>0</code> für Ganzzahltypen, <code>0.0</code> für
+Fliesskommazahlen, <code>nullptr</code> (oder <code>NULL</code>) für
+Zeiger, und <code>'\0'</code> für Textzeichen.</p>
 </div>
 
 <div class="stylebody">
 
 <p lang="en">Use <code>0</code> for integers and <code>0.0</code>
 for reals. This is not controversial.</p>
+<p lang="de">Schreibe <code>0</code> für Ganzzahltypen, <code>0.0</code> für
+Fliesskommazahlen. Das ist nicht widersinnig.</p>
 
 <p lang="en"> For
 pointers (address values), there is a choice between
@@ -3582,6 +3654,8 @@ type and also makes code more readable.</p>
 
 <div class="summary">
 <p lang="en">Prefer <code>sizeof(<var>varname</var>)</code> to
+<code>sizeof(<var>type</var>)</code>.</p>
+<p lang="de">Schreibe besser <code>sizeof(<var>varname</var>)</code> als 
 <code>sizeof(<var>type</var>)</code>.</p>
 </div>
 
@@ -3619,6 +3693,9 @@ memset(&amp;data, 0, sizeof(data));
 or unimportant - cases where the type doesn't aid in clarity for the
 reader. Continue to use manifest type declarations when it helps
 readability.</p>
+<p lang="de">Benutze <code>auto</code> um Variablennamen auszublenden, die
+völlig klar oder überflüssig sind für das Verständnis deines Codes.
+Benutze weiterhin starke Namen wenn es der Lesbarkeit dienlich erscheint.</p>
 </div>
 
 <div class="stylebody">
@@ -3708,6 +3785,7 @@ and <code>.second</code> (often const-ref).
 
 <div class="summary">
 <p lang="en">You may use braced initializer lists.</p>
+<p lang="de">Du darfst Initialisierungslisten mit geschwungenen Klammern benutzen.</p>
 </div>
 
 <div class="stylebody">
@@ -3803,7 +3881,7 @@ means can be confusing.</p>
 <div class="summary">
 <p lang="en">Use lambda expressions where appropriate. Prefer explicit captures
 when the lambda will escape the current scope.</p>
-<p lang="en">Verwende Lambda-Ausdrücke wo angebracht. Bevorzuge explizite <i>captures</i>
+<p lang="de">Verwende Lambda-Ausdrücke wo angebracht. Bevorzuge ausdrückliche <i>captures</i>,
 wenn die Lambda den gegenwärtigen Gültigkeitsbereich verlässt.</p>
 </div>
 
@@ -4151,6 +4229,7 @@ standard libraries in C++11:</p>
 
 <div class="summary">
 <p lang="en">Do not define specializations of <code>std::hash</code>.</p>
+<p lang="en">Implementiere keine Spezialisierung von <code>std::hash</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -4235,6 +4314,9 @@ using a new customization mechanism that doesn't have the drawbacks of
 Consider portability to other environments
 before using C++11 features in your
 project. </p>
+<p lang="de">Benutze die Bibliotheken und Spracherweiterungen von C++11 wenn möglich.
+Beachte aber die Kompatibilität mit Anderen vor dem Einbringen von C++11 Eigenheiten
+im Projekt.</p>
 
 </div>
 
@@ -4316,6 +4398,8 @@ guide, the following C++11 features may not be used:</p>
 
 <div class="summary">
 <p lang="en">Nonstandard extensions to C++ may not be used unless otherwise specified.</p>
+<p lang="de">Nicht-Standard-Erweiterungen von C++ dürfen nicht benutzt werden, ausser
+wirklich spezifiert.</p>
 </div>
 <div class="stylebody">
 <div class="definition">
@@ -4364,6 +4448,8 @@ guide, the following C++11 features may not be used:</p>
 
 <div class="summary">
 <p lang="en">Public aliases are for the benefit of an API's user, and should be clearly documented.</p>
+<p lang="de">Öffentliche Zweitbezeichnungen, wenn ausführlich dokumentiert, sind
+für den Benutzer der Programmierschnittstelle (API) nützlich.</p>
 </div>
 <div class="stylebody">
 <div class="definition">
@@ -4469,6 +4555,8 @@ the rules are the rules.</p>
 
 <div class="summary">
 <p lang="en">Names should be descriptive; avoid abbreviation.</p>
+<p lang="de">Namen sollten deutlich beschreibend sein; versuche nicht,
+Abkürzungen einzuführen.</p>
 </div>
 
 <div class="stylebody">
@@ -4514,6 +4602,11 @@ Follow the convention that your
  
 project uses. If there is no consistent
 local pattern to follow, prefer "_".</p>
+<p lang="de">Dateinamen sollten in Kleinbuchstaben geschrieben sein
+und können Unterstriche (<code>_</code>) oder Trennzeichen (<code>-</code>)
+enthalten.
+Folge der Projektkonvention, oder
+bevorzuge "_".</p>
 </div>
 
 <div class="stylebody">
@@ -4554,6 +4647,9 @@ directly into your <code>.h</code> file. </p>
 <p lang="en">Type names start with a capital letter and have a capital
 letter for each new word, with no underscores:
 <code>MyExcitingClass</code>, <code>MyExcitingEnum</code>.</p>
+<p lang="de">Typnamen starten mit einem Grossbuchstaben und
+für jedes Teilwort (camel case), ohne Unterstriche dazwischen:
+<code>MyExcitingClass</code>, <code>MyExcitingEnum</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -4586,6 +4682,13 @@ enum UrlTableErrors { ...
 <p lang="en">The names of variables (including function parameters) and data members are
 all lowercase, with underscores between words. Data members of classes (but not
 structs) additionally have trailing underscores. For instance:
+<code>a_local_variable</code>, <code>a_struct_data_member</code>,
+<code>a_class_data_member_</code>.</p>
+<p lang="de">Namen von Variablen, und auch von Funktionsparametern und Data-Member,
+sind alle in Kleinbuchstaben geschrieben mit Unterstrichen zwischen Teilwörtern.
+Data-Member von Klassen, aber nicht von Strukturen, sind mit einem Unterstrich am Ende
+des Namens bezeichnet.
+Beispiele:
 <code>a_local_variable</code>, <code>a_struct_data_member</code>,
 <code>a_class_data_member_</code>.</p>
 </div>
@@ -4644,6 +4747,10 @@ versus a class.</p>
   <p lang="en">Variables declared constexpr or const, and whose value is fixed for
   the duration of the program, are named with a leading "k" followed
   by mixed case.  For example:</p>
+  <p lang="de">Variablen deklariert als <code>constexpr</code> oder <code>const</code>
+  sind Konstanten für die Dauer der Ausführung des Programmes und bezeichnet
+  mit einem vorangestellten "k" gefolgt von gemischter Gross-/Kleinschreibung.
+  Beispiel:</p>
 </div>
 
 <pre>const int kDaysInAWeek = 7;
@@ -4664,6 +4771,8 @@ versus a class.</p>
 <div class="summary">
 <p lang="en">Regular functions have mixed case; accessors and mutators may be named
 like variables.</p>
+<p lang="de">Gewöhnliche Funktionen werden in gemischter Gross-/Kleinschreibung geschrieben.
+Zugriffsfunktionen (getters, setters) können wie <a href="#Variable_Names">Variablen</a> geschrieben werden.</p>
 </div>
 
 <div class="stylebody">
@@ -4699,6 +4808,9 @@ set_count(int count)</code>.</p>
 based on the project name
 . Avoid collisions
 between nested namespaces and well-known top-level namespaces.</p>
+<p lang="de">Namen von Namensräumen sind in Kleinbuchstaben zu schreiben.
+Hauptnamensräume sind nach dem Projektnamen zu bezeichnen.
+Gehe Namenskollisionen mit bekannten Namensräumen aus dem Weg.</p>
 </div>
 
 <div class="stylebody">
@@ -4743,6 +4855,10 @@ in <code>frobber.h</code>)</p>
 <a href="#Constant_Names">constants</a> or like
 <a href="#Macro_Names">macros</a>: either <code>kEnumName</code> or
 <code>ENUM_NAME</code>.</p>
+<p lang="de">Aufzählungen (scoped und unscoped) sollten bezeichnet werde wie
+<a href="#Constant_Names">Konstanten</a> oder wie
+<a href="#Macro_Names">Makros</a>: also wie <code>kEnumName</code> oder
+<code>ENUM_NAME</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -4786,6 +4902,9 @@ names are actually causing a compile-time problem.</p>
 <p lang="en">You're not really going to <a href="#Preprocessor_Macros">
 define a macro</a>, are you? If you do, they're like this:
 <code>MY_MACRO_THAT_SCARES_SMALL_CHILDREN</code>.</p>
+<p lang="de">Du willst nicht wirklich ein <a href="#Preprocessor_Macros">
+Makro definieren</a>, gell? Falls doch, die schauen so aus:
+<code>MY_MACRO_THAT_SCARES_SMALL_CHILDREN</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -4807,6 +4926,8 @@ named with all capitals and underscores.</p>
 <p lang="en">If you are naming something that is analogous to an
 existing C or C++ entity then you can follow the existing
 naming convention scheme.</p>
+<p lang="de">Wenn du etwas benennen musst, das ähnlich ist, wie
+ein bestehendes C oder C++ Ding, dann folge deren Konvention.</p>
 </div>
 
 <div class="stylebody">
@@ -4851,6 +4972,7 @@ one may be you!</p>
 <div class="summary">
 <p lang="en">Use either the <code>//</code> or <code>/* */</code>
 syntax, as long as you are consistent.</p>
+<p lang="de">Benutze entweder <code>//</code> oder <code>/* */</code>.</p>
 </div>
 
 <div class="stylebody">
@@ -4866,6 +4988,7 @@ comment and what style you use where.</p>
 
 <div class="summary">
 <p lang="en">Start each file with license boilerplate.</p>
+<p lang="de">Beginne jede Datei mit einem Schwall an Lizenztext.</p>
 
 <p lang="en">File comments describe the contents of a file. If a file declares,
 implements, or tests exactly one abstraction that is documented by a comment
@@ -4906,6 +5029,8 @@ not at the file level.</p>
 <div class="summary">
 <p lang="en">Every non-obvious class declaration should have an accompanying
 comment that describes what it is for and how it should be used.</p>
+<p lang="de">Jede nicht banale Klassendeklaration sollte von einem Kommentar
+begleitet sein, der aufzeigt, für was sie ist und wie man sie einsetzen kann.</p>
 </div>
 
 <div class="stylebody">
@@ -4945,6 +5070,9 @@ should accompany the implementation of the class's methods.</p>
 <p lang="en">Declaration comments describe use of the function (when it is
 non-obvious); comments at the definition of a function describe
 operation.</p>
+<p lang="de">Kommentare in der Funktionsdeklaration beschreiben die
+Verwendung der Funktion, falls nicht banal; Kommentare in der Implementation
+der Funktion erläutert deren Operationen.</p>
 </div>
 
 <div class="stylebody">
@@ -5056,6 +5184,8 @@ focus of the comments should be on how it does it.</p>
 <p lang="en">In general the actual name of the variable should be
 descriptive enough to give a good idea of what the variable
 is used for. In certain cases, more comments are required.</p>
+<p lang="de">Generell sollte der Name einer Variable deren Verwendungszweck
+genügend gut beschreiben. In einzelnen Fällen sind Kommentare nötig.</p>
 </div>
 
 <div class="stylebody">
@@ -5096,6 +5226,8 @@ const int kNumTestCases = 6;
 <div class="summary">
 <p lang="en">In your implementation you should have comments in tricky,
 non-obvious, interesting, or important parts of your code.</p>
+<p lang="de">In schwierigen Passagen der Implementation sind
+Kommentare ein wichtiger Bestandteil des Codes.</p>
 </div>
 
 <div class="stylebody">
@@ -5236,6 +5368,9 @@ the example above would be obvious:
 <p lang="en">Pay attention to punctuation, spelling, and grammar; it is
 easier to read well-written comments than badly written
 ones.</p>
+<p lang="de">Achte auf korrekte Schreibweise, Grammatik und richtig
+gesetzte Satzzeichen. Es ist einfacher und angenehmer gut geschriebene Kommentare
+zu lesen.</p>
 </div>
 
 <div class="stylebody">
@@ -5261,6 +5396,9 @@ goal.</p>
 <div class="summary">
 <p lang="en">Use <code>TODO</code> comments for code that is temporary,
 a short-term solution, or good-enough but not perfect.</p>
+<p lang="de">Setze einen <code>TODO</code>-Kommentar für Code, der 
+temporär oder nicht fertiggestellt ist, ein Quickhack oder überarbeitet
+werden sollte.</p>
 </div>
 
 <div class="stylebody">
@@ -5301,6 +5439,8 @@ handle XML responses.").</p>
 <div class="summary">
 <p lang="en">Mark deprecated interface points with <code>DEPRECATED</code>
 comments.</p>
+<p lang="de">Markiere zurückgezogene Schnittstellen mit einem
+<code>DEPRECATED</code>-Kommentar.</p>
 </div>
 
 <div class="stylebody">
@@ -5364,6 +5504,8 @@ settings file for emacs</a>.</p>
 <div class="summary">
 <p lang="en">Each line of text in your code should be at most 80
 characters long.</p>
+<p lang="de">Keine Zeile des Programmcodes sollte die Länge von 80
+Zeichen überschreiten.</p>
 </div>
 
 <div class="stylebody">
@@ -5421,6 +5563,8 @@ the maximum length. </p>
 <div class="summary">
 <p lang="en">Non-ASCII characters should be rare, and must use UTF-8
 formatting.</p>
+<p lang="de">Nicht-ASCII-Zeichen sollten spärlich eingesetzt werden
+und müssen als UTF-8 formatiert sein.</p>
 </div>
 
 <div class="stylebody">
@@ -5466,6 +5610,7 @@ interacts with the Windows API, which uses
 
 <div class="summary">
 <p lang="en">Use only spaces, and indent 2 spaces at a time.</p>
+<p lang="de">Benutze nur Leerzeichen und rücke Zeilen mit zweien ein.</p>
 </div>
 
 <div class="stylebody">
@@ -5483,6 +5628,10 @@ hit the tab key.</p>
 on the same line if they fit. Wrap parameter lists which do
 not fit on a single line as you would wrap arguments in a
 <a href="#Function_Calls">function call</a>.</p>
+<p lang="de">Der Rückgabetyp steht auf der gleichen Zeile
+wie der Funktionsname. Parameter desgleichen, wenn sie auf
+eine Zeile passen. Ansonsten werden sie wie 
+<a href="#Function_Calls">Funktionsargumente</a> umgebrochen.</p>
 </div>
 
 <div class="stylebody">
@@ -5600,6 +5749,8 @@ return type:</p>
 <div class="summary">
 <p lang="en">Format parameters and bodies as for any other function, and capture
 lists like other comma-separated lists.</p>
+<p lang="de">Formatiere deren Argumente und Funktionskörper wie andere
+Funktionen, die capture-List wie andere kommagetrennte Listen.</p>
 </div>
 
 <div class="stylebody">
@@ -5628,6 +5779,10 @@ line indented by four spaces and continue at that 4 space
 indent. In the absence of other considerations, use the
 minimum number of lines, including placing multiple arguments
 on each line where appropriate.</p>
+<p lang="de">Schreibe entweder den Aufruf auf einer Zeile oder
+setze nach der öffnenden Klammer auf einer neuen Zeile fort,
+eingerückt um jeweils vier Leerzeichen. Verwende nur soviele Zeilen, 
+wie nötig.</p>
 </div>
 
 <div class="stylebody">
@@ -5702,6 +5857,8 @@ my_widget.Transform(x1, x2, x3,
 <div class="summary">
 <p lang="en">Format a <a href="#Braced_Initializer_List">braced initializer list</a>
 exactly like you would format a function call in its place.</p>
+<p lang="de">Formatiere eine <a href="#Braced_Initializer_List">Initialisierungsliste</a>
+mit geschwungenen Klammern wie einen Funktionsaufruf.</p>
 </div>
 
 <div class="stylebody">
@@ -5745,6 +5902,9 @@ MyType m = {  // Here, you could also break before {.
 <div class="summary">
 <p lang="en">Prefer no spaces inside parentheses. The <code>if</code>
 and <code>else</code> keywords belong on separate lines.</p>
+<p lang="de">Innerhalb geklammerter Ausdrücke sollten keine Leerzeichen
+stehen. Die Anweisungen <code>if</code> und <code>else</code> 
+müssen in eigenen Zeilen abgesetzt stehen.</p>
 </div>
 
 <div class="stylebody">
@@ -5862,6 +6022,13 @@ if (condition) {
 non-trivial fall-through between cases.
 Braces are optional for single-statement loops.
 Empty loop bodies should use empty braces or <code>continue</code>.</p>
+<p lang="de">In Fallunterscheidungsanweisungen können Bereiche in 
+geschwungenen Klammern stehen. Weise daraufhin, wenn Fälle einen Codebereich
+teilen.
+In Schleifen sind die geschwungenen Klammern nur nötig, falls sie mehr
+als einen einzelnen Befehl einschliessen. Ohne Befehle sollte der Bereich
+geklammert sein oder durch das Kennwort <code>continue</code> ersetzt
+werden.</p>
 </div>
 
 <div class="stylebody">
@@ -5932,6 +6099,8 @@ while (condition) continue;  // Good - continue indicates no logic.
 <div class="summary">
 <p lang="en">No spaces around period or arrow. Pointer operators do not
 have trailing spaces.</p>
+<p lang="de">Keine Leerzeichen um Punkt oder Pfeil. 
+Zeigeroperatoren haben kein nachgestelltes Leerzeichen.</p>
 </div>
 
 <div class="stylebody">
@@ -5992,6 +6161,8 @@ that file.</p>
 <p lang="en">When you have a boolean expression that is longer than the
 <a href="#Line_Length">standard line length</a>, be
 consistent in how you break up the lines.</p>
+<p lang="de">Sei konsistent im Umbrechen von langen boolschen Audrücken, 
+wenn sie die <a href="#Line_Length">Zeilenlänge</a> überschreiten.</p>
 </div>
 
 <div class="stylebody">
@@ -6026,6 +6197,8 @@ the word operators, such as <code>and</code> and
 <div class="summary">
 <p lang="en">Do not needlessly surround the <code>return</code>
 expression with parentheses.</p>
+<p lang="de">Um den <code>return</code>-Ausdruck sollten
+keine überflüssigen Klammern gesetzt werden.</p>
 </div>
 
 <div class="stylebody">
@@ -6051,6 +6224,8 @@ return(result);                // return is not a function!
 
 <div class="summary">
 <p lang="en">Your choice of <code>=</code>, <code>()</code>, or
+<code>{}</code>.</p>
+<p lang="de">Zur Auswahl stehen <code>=</code>, <code>()</code> oder
 <code>{}</code>.</p>
 </div>
 
@@ -6096,6 +6271,8 @@ int pi{3.14};  // Compile error: narrowing conversion.
 <div class="summary">
 <p lang="en">The hash mark that starts a preprocessor directive should
 always be at the beginning of the line.</p>
+<p lang="de">Das Doppelkreuz, das eine Präprozessordirektive einleitet,
+sollte immer am Anfang der Zeile stehen.</p>
 </div>
 
 <div class="stylebody">
@@ -6132,6 +6309,9 @@ beginning of the line.</p>
 <div class="summary">
 <p lang="en">Sections in <code>public</code>, <code>protected</code> and
 <code>private</code> order, each indented one space.</p>
+<p lang="de">Die Sektionen <code>public</code>, <code>protected</code> und
+<code>private</code> stehen in dieser Reihenfolge und werden jeweils
+um ein Leerzeichen eingerückt.</p>
 </div>
 
 <div class="stylebody">
@@ -6195,6 +6375,8 @@ needed) is:</p>
 <div class="summary">
 <p lang="en">Constructor initializer lists can be all on one line or
 with subsequent lines indented four spaces.</p>
+<p lang="de">Initialisierungslisten in Erzeugerinnen können auf einer Zeile stehen
+oder jede in einer Zeile für sich eingerückt um vier Leerzeichen.</p>
 </div>
 
 <div class="stylebody">
@@ -6233,6 +6415,7 @@ MyClass::MyClass(int var)
 
 <div class="summary">
 <p lang="en">The contents of namespaces are not indented.</p>
+<p lang="de">Der Inhalt von Namensräumen wird nie eingerückt.</p>
 </div>
 
 <div class="stylebody">
@@ -6275,6 +6458,8 @@ namespace bar {
 <div class="summary">
 <p lang="en">Use of horizontal whitespace depends on location. Never put
 trailing whitespace at the end of a line.</p>
+<p lang="de">Der Gebrauch von horizontalem Leerraum hängt vom Ort ab.
+Lasse nie Leerzeichen am Ende einer Zeile stehen.</p>
 </div>
 
 <div class="stylebody">
@@ -6368,10 +6553,11 @@ std::vector&lt;char *&gt; x;
 
 </div> 
 
-<h3 id="Vertical_Whitespace">Vertikale Leerzeichen</h3>
+<h3 id="Vertical_Whitespace">Vertikaler Leerraum</h3>
 
 <div class="summary">
 <p lang="en">Minimize use of vertical whitespace.</p>
+<p lang="de">Schränke den Einsatz von vertikalem Leerraum ein.</p>
 </div>
 
 <div class="stylebody">
@@ -6449,7 +6635,7 @@ conventions, mainly derived from the conventions in Windows
 headers and other Microsoft code. We want to make it easy
 for anyone to understand your code, so we have a single set
 of guidelines for everyone writing C++ on any platform.</p>
-<p lang="en">Windowsprogrammierer haben ihre eigenen 
+<p lang="de">Windowsprogrammierer haben ihre eigenen 
 Konventionen erarbeitet, hauptsächlich aus den Windows-Header
 und anderem Code von Microsoft. Wir wollen es für jeden einfach
 machen, deinen Code zu verstehen. Deshalb haben wir einen
